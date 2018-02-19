@@ -37,6 +37,7 @@ public class User implements Serializable {
         this.password = password;
     }
 
+
     public String inputName(){
         String inputLine = "Please enter a Username:\n\tNote username must be 7 characters long";
         Scanner userInput = new Scanner(System.in);
@@ -60,7 +61,6 @@ public class User implements Serializable {
 
         return outputLine;
     }
-
 
     @Override
     public String toString() {

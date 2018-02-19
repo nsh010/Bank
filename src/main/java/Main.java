@@ -86,6 +86,7 @@ public class Main {
             customer.setPassword(customer.inputPassword(1));
             //check if customer is an active user
             if(true){
+                customerMainMenu(customer);
                 break;
             }
             else {
@@ -113,9 +114,42 @@ public class Main {
 
     }
 
-    public static void customerMainMenu(){
-        System.out.println("");
+    public static void customerMainMenu(User newPerson){
+        int menu;
+        Person currentPerson = new Person();
+        currentPerson.setUser(newPerson);
+        String name = newPerson.getUserName();
+        do{
+            System.out.println("Welcome Back " + name +
+                    "\nPlease indicate what you need by entering 1, 2, 3, or 4:\n" +
+                    "\t1. Create new Account\n\t2. View Accounts\n\t3. View Personal information\n\t 4. Exit\n");
+            menu = readMenu();
+            switch (menu) {
+                case 1:
+                    System.out.println("Create new Account");
+                    break;
+                case 2:
+                    System.out.println("View Accounts");
+                    break;
+                case 3:
+                    System.out.println("View Personal Information\n\tNote you will not be able to change information, must contact Admin");
+                    System.out.println(currentPerson.toString());
+                    break;
+                case 4:
+                    System.out.println("Logging out and entering Main Menu");
+                    break;
+                default:
+                    System.out.println("Sorry for the inconvenience, System is down try running program");
+                    break;
+            }
+        }while(menu != 4);
     }
 
-
+    public static void newAccount(Person x){
+        String inputLine = "Please enter Account Type:\nEnter 1, 2, or 3\n\t1.Checking\n\t2.Savings\n\t3.Joint\n";
+        Scanner userInput = new Scanner(System.in);
+        ScanInput uPin = new ScanInput(userInput);
+        int output;
+        output = uPin.scannerUserInputInt(inputLine,0);
+    }
 }

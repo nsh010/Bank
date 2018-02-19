@@ -1,12 +1,12 @@
-import
-        java.io.Serializable;
-import java.util.Arrays;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Person implements Serializable {
     private User user;
-    private String[] accounts;
+    private ArrayList<Integer> accounts;
     private int pin;
+    private int accountType; // pending = 0, active = 1
     private String name;
     private String ssn;
     private String dob;
@@ -14,8 +14,9 @@ public class Person implements Serializable {
 
     public Person(){
         this.user = new User();
-        this.accounts = null;
+        this.accounts = new ArrayList<>();
         this.pin = 0;
+        this.accountType = 0;
         this.name = null;
         this.ssn = null;
         this.dob = null;
@@ -24,18 +25,20 @@ public class Person implements Serializable {
 
     public Person(User x){
         this.user = x;
-        this.accounts = null;
+        this.accounts = new ArrayList<>();
         this.pin = 0;
+        this.accountType = 0;
         this.name = null;
         this.ssn = null;
         this.dob = null;
         this.address = null;
     }
 
-    public Person(User user, String[] accounts, int pin, String name, String ssn, String dob, String address) {
+    public Person(User user, ArrayList<Integer> accounts, int pin, int accountType, String name, String ssn, String dob, String address) {
         this.user = user;
         this.accounts = accounts;
         this.pin = pin;
+        this.accountType = accountType;
         this.name = name;
         this.ssn = ssn;
         this.dob = dob;
@@ -50,11 +53,11 @@ public class Person implements Serializable {
         this.user = user;
     }
 
-    public String[] getAccounts() {
+    public ArrayList<Integer> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(String[] accounts) {
+    public void setAccounts(ArrayList<Integer> accounts) {
         this.accounts = accounts;
     }
 
@@ -64,6 +67,14 @@ public class Person implements Serializable {
 
     public void setPin(int pin) {
         this.pin = pin;
+    }
+
+    public int getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(int accountType) {
+        this.accountType = accountType;
     }
 
     public String getName() {
@@ -98,12 +109,14 @@ public class Person implements Serializable {
         this.address = address;
     }
 
+
     @Override
     public String toString() {
         return "Person{" +
-                "user=" + user.toString() +
-                ", accounts=" + Arrays.toString(accounts) +
+                "user=" + user +
+                ", accounts=" + accounts +
                 ", pin=" + pin +
+                ", accountType=" + accountType +
                 ", name='" + name + '\'' +
                 ", ssn='" + ssn + '\'' +
                 ", dob='" + dob + '\'' +

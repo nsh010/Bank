@@ -46,7 +46,7 @@ public class ScanInput {
                     return true;
                 }
                 else return false;
-
+                
             default:
                 return false;
         }
