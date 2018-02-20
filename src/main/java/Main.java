@@ -7,15 +7,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-        /*
-        User noop = new User();
-        noop.setUserName(noop.inputName(noop));
-        noop.setPassword(noop.inputPassword(noop,2));
-        System.out.println(noop.toString());
-        */
-
     openBank();
-
     }
 
     public static void openBank(){
@@ -80,7 +72,6 @@ public class Main {
     public static void customerLogin(){
         Person newPerson = new Person();
         PersonDaoJtbc p = new PersonDaoJtbc();
-
         for(;;){
             newPerson.setUserName(newPerson.inputUserName());
             String password = newPerson.inputPassword(1);
@@ -95,23 +86,42 @@ public class Main {
                 continue;
             }
         }
-
     }
 
     public static void employeeLogin(){
         Person employee = new Person();
+        PersonDaoJtbc p = new PersonDaoJtbc();
         for(;;){
             employee.setUserName(employee.inputUserName());
-            employee.setPassword(employee.inputPassword(1));
-            //check if employee is an active user
-            if(true){
-                break;
+            String password = employee.inputPassword(1);
+            employee = p.getByUsername(employee.getUserName());
+            //check if customer is an active user
+            if(password.equals(employee.getPassword())){
+                int check = employee.getAccountType();
+                if(check == 3){
+                    adminMainMenu(employee);
+                    //admin
+                    break;
+                }else if(check ==2){
+                    employeeMainMenu(employee);
+                    //Normal Account
+                    break;
+                } else{
+                    continue;
+                }
             }
             else {
                 System.out.println("Try again, account is not in the system or information entered incorrectly");
                 continue;
             }
         }
+    }
+
+    public static void employeeMainMenu(Person employee){
+
+    }
+
+    public static void adminMainMenu(Person employee){
 
     }
 
