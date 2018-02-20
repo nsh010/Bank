@@ -41,7 +41,7 @@ public class PersonDaoJtbc implements PersonDao {
     @Override
     public void createPerson(Person person){
         try(Connection conn = connectionUtil.getConnection()){
-            String query = "INSERT INTO persons (userName, password, pin, accountType, nameFL, ssn, dob, address) VALUES(?,?,?,?,?,?,?,?) RETURNING  userName";
+            String query = "INSERT INTO persons (userName, password, accountType, pin, nameFL, ssn, dob, address) VALUES(?,?,?,?,?,?,?,?) RETURNING  userName";
             PreparedStatement ps = conn.prepareStatement(query);
 
             ps.setString(1, person.getUserName());

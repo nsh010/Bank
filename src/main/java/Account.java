@@ -126,11 +126,11 @@ public class Account {
         if(admin.getAccountType() == 2 || admin.getAccountType() == 3){
             if(this.accountType == 1)
             {
-                this.accountType = 0;
+                this.status = 0;
             }
             if (this.accountType == 0){
 
-                this.accountType = 1;
+                this.status = 1;
             }
         }
         else {
