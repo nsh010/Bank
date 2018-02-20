@@ -2,9 +2,6 @@
 import java.util.*;
 
 public class Main {
-    //need an array of employee initalized here
-    //new user = admin
-
 
     public static void main(String[] args) {
     openBank();
@@ -277,7 +274,7 @@ public class Main {
                     employeeApproveDenyPerson(employee);
                     break;
                 case 4:
-
+                    adminMoveMoney();
                     break;
                 case 5:
                     adminApproveDenyPerson(employee);
@@ -386,6 +383,7 @@ public class Main {
         int money;
         for(;;) {
             output = uPin.scannerUserInputInt(inputLine, 1);
+            System.out.println("Balance: " + x.getBalance());
             if(output == 4){
                 break;
             }
@@ -523,55 +521,34 @@ public class Main {
     }
     public static void adminMoveMoney(){
         Person y = findPerson();
-        Account x = new Account();
-        String inputLineAcc = "Please Enter the account number you want to ";
-
-
+        ArrayList<Account> a1, a2;
         AccountDaoJtbc acc = new AccountDaoJtbc();
-        String inputLine = "Please enter action you would like to complete:\nEnter 1, 2, 3, or 4\n\t1. Deposit\n\t2. Withdraw\n\t3. Transfer\n\t4. Exit\n";
+        String username = y.getUserName();
+        a1 = acc.getByUser1(username);
+        a2 = acc.getByUser2(username);
+        for (Account b : a1){
+            if(b.getStatus() == 1){
+                System.out.println(b.toString());
+            }
+        }
+        for (Account b : a2){
+            if(b.getStatus() == 1){
+                System.out.println(b.toString());
+            }
+        }
+        Account x = new Account();
+        String inputLine = "Please enter the Account Number you want to change";
         Scanner userInput = new Scanner(System.in);
         ScanInput uPin = new ScanInput(userInput);
         int output;
-        int transfer;
-        int money;
-        for(;;) {
-            output = uPin.scannerUserInputInt(inputLine, 1);
-            if(output == 4){
+        for(;;){
+            output = uPin.scannerUserInputInt(inputLine, 3);
+            x = acc.getByID(output);
+            if(y.getUserName().equals(x.getUser1())||y.getUserName().equals(x.getUser2())){
                 break;
             }
-            money = uPin.scannerUserInputInt("Enter Amount: ",3);
-            switch (output){
-                case 1:
-                    x.deposit(y,x,money);
-                    acc.updateBalance(x);
-                    break;
-                case 2:
-                    x.withdraw(y,x,money);
-                    acc.updateBalance(x);
-                    break;
-                case 3:
-                    Account transferAccount;
-                    for(;;) {
-                        transfer = uPin.scannerUserInputInt("Please enter Account number to Transfer to: ", 3);
-                        transferAccount = acc.getByID(transfer);
-                        //Check if the entered id is a valid one
-                        if(transferAccount == null) {
-                            System.out.println("Account not found");
-                            continue;
-                        }else if(x.getUser1().equals(y.getUserName()) || x.getUser2().equals(y.getUserName())){
-                            break;
-                        }
-                    }
-                    // get account
-                    x.transfer(y,x,transferAccount,money);
-                    acc.updateBalance(x);
-                    acc.updateBalance(transferAccount);
-                    break;
-                default:
-                    System.out.println("Error try again");
-                    break;
-            }
         }
+        moveMoney(y,x);
     }
 
 }
