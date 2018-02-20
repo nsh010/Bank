@@ -110,7 +110,6 @@ public class Main {
             //check if customer is an active user
             if(password.equals(employee.getPassword())){
                 int check = employee.getAccountType();
-                System.out.println(check);
                 if(check == 3){
                     adminMainMenu(employee);
                     //admin
@@ -163,7 +162,7 @@ public class Main {
 
     public static void viewPersonal(){
         Person viewCurrent = findPerson();
-        viewCurrent.toString();
+        System.out.println(viewCurrent.toString());
     }
 
     public static Person findPerson(){
