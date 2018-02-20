@@ -18,7 +18,7 @@ public class Person implements Serializable {
         this.userName = null;
         this.password = null;
         this.pin = 0;
-        this.accountType = 0;
+        this.accountType = 1;
         this.nameFL = null;
         this.ssn = null;
         this.dob = null;

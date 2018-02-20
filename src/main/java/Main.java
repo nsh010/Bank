@@ -70,7 +70,7 @@ public class Main {
         newPerson.setPassword(newPerson.inputPassword(2));
         newPerson.setPin(newPerson.inputPin());
         newPerson.setNameFL(newPerson.inputName());
-        newPerson.setAccountType(0);
+        newPerson.setAccountType(1);
         newPerson.setSsn(newPerson.inputSSN());
         newPerson.setDob(newPerson.inputDOB());//Send it to the pending account table
         newPerson.setAddress(newPerson.inputAddress());
@@ -439,6 +439,9 @@ public class Main {
         //setup new account
         newAccout.setUser1(x.getUserName());
         newAccout.setAccountType(output);
+        Random rand = new Random();
+        int num = rand.nextInt(500) + 1;
+        newAccout.setAccountidNum(num);
         // for joint classes
         if(output == 3)
         {
