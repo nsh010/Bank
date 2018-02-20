@@ -46,7 +46,13 @@ public class ScanInput {
                     return true;
                 }
                 else return false;
-                
+            case 2:
+                if(input == 1 || input == 2 || input == 3){
+                    return true;
+                }
+                else return false;
+            case 3:
+                return true;
             default:
                 return false;
         }
@@ -70,9 +76,9 @@ public class ScanInput {
             }
         }
         return word;
-     }
+    }
 
-     public boolean constraintString( String word, int x){
+    public boolean constraintString( String word, int x){
         switch (x){
             case 0:
                 if(word != null){
@@ -119,7 +125,7 @@ public class ScanInput {
                     return false;
                 }
             case 5:
-                if(word.matches("\\d{2}/\\d{2}/\\d{4}") && datecheack(word)){
+                if(word.matches("\\d{2}/\\d{2}/\\d{4}") && dateCheck(word)){
                     return true;
                 }
                 else {
@@ -129,18 +135,18 @@ public class ScanInput {
             default:
                 return false;
         }
-     }
-     private static boolean datecheack(String date){
-         SimpleDateFormat checker = new SimpleDateFormat("MM/dd/yyyy");
-         checker.setLenient(false);
-         try{
-             Date test = checker.parse(date);
+    }
+    private static boolean dateCheck(String date){
+        SimpleDateFormat checker = new SimpleDateFormat("MM/dd/yyyy");
+        checker.setLenient(false);
+        try{
+            Date parse = checker.parse(date);
 
-         } catch (ParseException e) {
-             //e.printStackTrace();
-             return false;
-         }
-         return true;
-     }
+        } catch (ParseException e) {
+            //e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
 }

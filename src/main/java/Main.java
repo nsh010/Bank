@@ -1,5 +1,5 @@
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     //need an array of employee initalized here
@@ -63,30 +63,31 @@ public class Main {
     }
 
     public static void newAccount(){
-        User newUser = new User();
         Person newPerson = new Person();
-        newUser.setUserName(newUser.inputName());
-        newUser.setPassword(newUser.inputPassword(2));
-        newPerson.setUser(newUser);
+        PersonDaoJtbc p = new PersonDaoJtbc();
+        newPerson.setUserName(newPerson.inputUserName());
+        newPerson.setPassword(newPerson.inputPassword(2));
         newPerson.setPin(newPerson.inputPin());
-        newPerson.setName(newPerson.inputName());
+        newPerson.setNameFL(newPerson.inputName());
+        newPerson.setAccountType(0);
         newPerson.setSsn(newPerson.inputSSN());
-        newPerson.setDob(newPerson.inputDOB());
+        newPerson.setDob(newPerson.inputDOB());//Send it to the pending account table
         newPerson.setAddress(newPerson.inputAddress());
-        //Send it to the pending account table
-
-        System.out.println("Pending Company Approval, takes 24 hours, please login in tomorrow, Thank you for your time\nReturning to Main Menu");
+        p.createPerson(newPerson);System.out.println("Pending Company Approval, takes 24 hours, please login in tomorrow, Thank you for your time\nReturning to Main Menu");
         //System.out.println(newPerson.toString());
     }
 
     public static void customerLogin(){
-        User customer = new User();
+        Person newPerson = new Person();
+        PersonDaoJtbc p = new PersonDaoJtbc();
+
         for(;;){
-            customer.setUserName(customer.inputName());
-            customer.setPassword(customer.inputPassword(1));
+            newPerson.setUserName(newPerson.inputUserName());
+            String password = newPerson.inputPassword(1);
+            newPerson = p.getByUsername(newPerson.getUserName());
             //check if customer is an active user
-            if(true){
-                customerMainMenu(customer);
+            if(password.equals(newPerson.getPassword())){
+                customerMainMenu(newPerson);
                 break;
             }
             else {
@@ -98,9 +99,9 @@ public class Main {
     }
 
     public static void employeeLogin(){
-        User employee = new User();
+        Person employee = new Person();
         for(;;){
-            employee.setUserName(employee.inputName());
+            employee.setUserName(employee.inputUserName());
             employee.setPassword(employee.inputPassword(1));
             //check if employee is an active user
             if(true){
@@ -114,26 +115,26 @@ public class Main {
 
     }
 
-    public static void customerMainMenu(User newPerson){
+    public static void customerMainMenu(Person newPerson){
         int menu;
-        Person currentPerson = new Person();
-        currentPerson.setUser(newPerson);
         String name = newPerson.getUserName();
         do{
             System.out.println("Welcome Back " + name +
                     "\nPlease indicate what you need by entering 1, 2, 3, or 4:\n" +
-                    "\t1. Create new Account\n\t2. View Accounts\n\t3. View Personal information\n\t 4. Exit\n");
+                    "\t1. Create new Account\n\t2. View Accounts\n\t3. View Personal information\n\t4. Exit\n");
             menu = readMenu();
             switch (menu) {
                 case 1:
                     System.out.println("Create new Account");
+                    newAccount(newPerson);
                     break;
                 case 2:
                     System.out.println("View Accounts");
+                    viewAccounts(newPerson);
                     break;
                 case 3:
                     System.out.println("View Personal Information\n\tNote you will not be able to change information, must contact Admin");
-                    System.out.println(currentPerson.toString());
+                    System.out.println(newPerson.toString());
                     break;
                 case 4:
                     System.out.println("Logging out and entering Main Menu");
@@ -145,11 +146,134 @@ public class Main {
         }while(menu != 4);
     }
 
+    public static void viewAccounts(Person x){
+        //figure out the accounts person x can access then print them all
+        //Then run a for loop of the accounts
+        // if null return message of no accounts available
+        ArrayList<Account> a1, a2;
+        AccountDaoJtbc acc = new AccountDaoJtbc();
+        Account currentAccount = new Account();
+        String username = x.getUserName();
+        a1 = acc.getByUser1(username);
+        a2 = acc.getByUser2(username);
+        for (Account b : a1){
+            System.out.println(b.toString());
+        }
+        for (Account b : a2){
+            System.out.println(b.toString());
+        }
+
+        String inputLine = "Please enter the Account Number you want to enter into";
+        Scanner userInput = new Scanner(System.in);
+        ScanInput uPin = new ScanInput(userInput);
+        int tigger =1;
+        int output;
+        for(;;){
+            output = uPin.scannerUserInputInt(inputLine,3);
+            // create for loop of accounts to make sure that match
+            for (Account b : a1){
+                if(b.getAccountidNum() == output){
+                    currentAccount = b;
+                    tigger = 0;
+                    break;
+                }
+            }
+            for (Account b : a2){
+                if(b.getAccountidNum() == output){
+                    currentAccount = b;
+                    tigger = 0;
+                    break;
+                }
+            }
+            if(tigger == 0){
+                break;
+            }
+            System.out.println("Input doesn't match your Account Number Try Again");
+        }
+        moveMoney(x,currentAccount);
+
+        // get complete account information
+    }
+
+    public static void moveMoney(Person y, Account x){
+        AccountDaoJtbc acc = new AccountDaoJtbc();
+        String inputLine = "Please enter action you would like to complete:\nEnter 1, 2, 3, or 4\n\t1. Deposit\n\t2. Withdraw\n\t3. Transfer\n\t4. Exit\n";
+        Scanner userInput = new Scanner(System.in);
+        ScanInput uPin = new ScanInput(userInput);
+        int output;
+        int transfer;
+        int money;
+        for(;;) {
+            output = uPin.scannerUserInputInt(inputLine, 1);
+            if(output == 4){
+                break;
+            }
+            money = uPin.scannerUserInputInt("Enter Amount: ",3);
+            switch (output){
+                case 1:
+                    x.deposit(y,x,money);
+                    acc.updateAccount(x);
+                    break;
+                case 2:
+                    x.withdraw(y,x,money);
+                    acc.updateAccount(x);
+                    break;
+                case 3:
+                    Account transferAccount;
+                    for(;;) {
+                        transfer = uPin.scannerUserInputInt("Please enter Account number to Transfer to: ", 3);
+                        transferAccount = acc.getByID(transfer);
+                        //Check if the entered id is a valid one
+                        if(transferAccount == null) {
+                            System.out.println("Account not found");
+                            continue;
+                        }else if(x.getUser1().equals(y.getUserName()) || x.getUser2().equals(y.getUserName())){
+                            break;
+                        }
+                    }
+                    // get account
+                    x.transfer(y,x,transferAccount,money);
+                    acc.updateAccount(x);
+                    acc.updateAccount(transferAccount);
+                    break;
+                default:
+                    System.out.println("Error try again");
+                    break;
+            }
+        }
+    }
+
+
     public static void newAccount(Person x){
         String inputLine = "Please enter Account Type:\nEnter 1, 2, or 3\n\t1.Checking\n\t2.Savings\n\t3.Joint\n";
         Scanner userInput = new Scanner(System.in);
         ScanInput uPin = new ScanInput(userInput);
         int output;
-        output = uPin.scannerUserInputInt(inputLine,0);
+        output = uPin.scannerUserInputInt(inputLine,2);
+        //create new Account
+        Account newAccout = new Account();
+        //setup new account
+        newAccout.setUser1(x.getUserName());
+        newAccout.setAccountType(output);
+        // for joint classes
+        if(output == 3)
+        {
+            String nameFL;
+            int secondPin;
+            Person secondPerson = new Person();
+            inputLine = "In order to complete the creation of the Joint account please enter the other User's username and pin";
+            for(;;) {
+                nameFL = secondPerson.inputUserName();
+                secondPin = secondPerson.inputPin();
+                //check if the account exist
+                if(true){
+                    break;
+                }
+                else continue;
+            }
+            //Add to account
+            newAccout.setUser2(nameFL);
+        }
+        System.out.println("New Bank Account Created pending Approval");
     }
 }

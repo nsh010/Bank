@@ -1,64 +1,56 @@
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class Person implements Serializable {
-    private User user;
-    private ArrayList<Integer> accounts;
+    private String userName;
+    private String password;
     private int pin;
-    private int accountType; // pending = 0, active = 1
-    private String name;
+    private int accountType; // pending = 0, active = 1, employee = 2, admin = 3
+    private String nameFL;
     private String ssn;
     private String dob;
     private String address;
 
     public Person(){
-        this.user = new User();
-        this.accounts = new ArrayList<>();
+        this.userName = null;
+        this.password = null;
         this.pin = 0;
         this.accountType = 0;
-        this.name = null;
+        this.nameFL = null;
         this.ssn = null;
         this.dob = null;
         this.address = null;
     }
 
-    public Person(User x){
-        this.user = x;
-        this.accounts = new ArrayList<>();
-        this.pin = 0;
-        this.accountType = 0;
-        this.name = null;
-        this.ssn = null;
-        this.dob = null;
-        this.address = null;
-    }
 
-    public Person(User user, ArrayList<Integer> accounts, int pin, int accountType, String name, String ssn, String dob, String address) {
-        this.user = user;
-        this.accounts = accounts;
+    public Person(String userName, String password, int pin, int accountType, String nameFL, String ssn, String dob, String address) {
+        this.userName = userName;
+        this.password = password;
         this.pin = pin;
         this.accountType = accountType;
-        this.name = name;
+        this.nameFL = nameFL;
         this.ssn = ssn;
         this.dob = dob;
         this.address = address;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public ArrayList<Integer> getAccounts() {
-        return accounts;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAccounts(ArrayList<Integer> accounts) {
-        this.accounts = accounts;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getPin() {
@@ -77,12 +69,12 @@ public class Person implements Serializable {
         this.accountType = accountType;
     }
 
-    public String getName() {
-        return name;
+    public String getNameFL() {
+        return nameFL;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameFL(String name) {
+        this.nameFL = name;
     }
 
     public String getSsn() {
@@ -109,19 +101,18 @@ public class Person implements Serializable {
         this.address = address;
     }
 
-
     @Override
     public String toString() {
-        return "Person{" +
-                "user=" + user +
-                ", accounts=" + accounts +
+        String temp = "userName = '" + userName + '\'' +
+                ", password='" + password + '\'' +
                 ", pin=" + pin +
                 ", accountType=" + accountType +
-                ", name='" + name + '\'' +
+                ", nameFL='" + nameFL + '\'' +
                 ", ssn='" + ssn + '\'' +
                 ", dob='" + dob + '\'' +
-                ", address='" + address + '\'' +
+                ", address='" + address.toString() + '\'' +
                 '}';
+        return temp;
     }
 
     public int inputPin(){
@@ -169,5 +160,44 @@ public class Person implements Serializable {
         return output;
     }
 
+    public String inputUserName(){
+        String inputLine = "Please enter a Username:\n\tNote username must be 7 characters long";
+        Scanner userInput = new Scanner(System.in);
+        ScanInput uName = new ScanInput(userInput);
+        String outputLine = uName.scannerUserInputString(inputLine,1);
+        return outputLine;
+    }
+
+    public String inputPassword(int type){
+        String inputLine = "Please enter Password:\n\tNote Password must be 8 characters long";
+        Scanner userInput = new Scanner(System.in);
+        ScanInput uName = new ScanInput(userInput);
+        String outputLine;
+        //Get Password
+        if(type == 1){
+            outputLine = uName.scannerUserInputString(inputLine,3);
+        }else {
+            //Create Password
+            outputLine = uName.scannerUserInputString(inputLine,2);
+        }
+
+        return outputLine;
+    }
+
+    public static String createSHA(String password, String salt){
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(salt.getBytes(StandardCharsets.UTF_8));
+            byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< bytes.length; i++){
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            password = sb.toString();
+        } catch (NoSuchAlgorithmException e){
+            e.printStackTrace();
+        }
+        return password;
+    }
 
 }
