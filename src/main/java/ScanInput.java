@@ -58,6 +58,11 @@ public class ScanInput {
                     return true;
                 }
                 else return false;
+            case 5:
+                if(input == 1 || input == 2 || input == 3|| input ==4 || input == 5||input ==6){
+                    return true;
+                }
+                else return false;
             default:
                 return false;
         }

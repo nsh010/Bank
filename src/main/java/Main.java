@@ -54,6 +54,15 @@ public class Main {
         return output;
     }
 
+    public static int readMenutwo() {
+        String inputLine = "Enter 1, 2, 3, 4, 5, 6";
+        Scanner userInput = new Scanner(System.in);
+        ScanInput uPin = new ScanInput(userInput);
+        int output;
+        output = uPin.scannerUserInputInt(inputLine, 5);
+        return output;
+    }
+
     public static void newAccount(){
         Person newPerson = new Person();
         PersonDaoJtbc p = new PersonDaoJtbc();
@@ -206,16 +215,19 @@ public class Main {
         ScanInput uPin = new ScanInput(userInput);
         int output;
         int check;
+        int temp =1;
         for(;;) {
             output = uPin.scannerUserInputInt(inputLine, 3);
             currentAccount = acc.getByID(output);
             if(!currentAccount.getUser1().equals(null)){
-                inputLine = "Enter 1 for Approve or 0 for Deny"
+                inputLine = "Enter 1 for Approve or 0 for Deny";
                 check = uPin.scannerUserInputInt(inputLine,4);
                 switch (check){
                     case 0:
                         System.out.println("Account Denied, Account Deleted from system");
-                        acc.deleteAccount(currentAccount);
+                        temp =0;
+                        //admin only
+                        //acc.deleteAccount(currentAccount);
                         break;
                     case 1:
                         System.out.println("Approve, Entered into System");
@@ -223,12 +235,15 @@ public class Main {
                         if(currentAccount.getStatus() != 0){
                             currentAccount.switchStatus(employee);
                         }
+                        temp =0;
                         break;
                     default:
                         System.out.println("Error try again");
                         break;
                 }
-                break;
+                if(temp == 0) {
+                    break;
+                }
             }else {
                 System.out.println("Try again Account does not match our Systems");
             }
@@ -237,7 +252,40 @@ public class Main {
 
 
     public static void adminMainMenu(Person employee){
-        
+        int menu;
+        String name  = employee.getUserName();
+        do{
+            System.out.println("Welcome Back " + name +
+                    "\nPlease indicate what you need by entering 1, 2, 3, or 4:\n" +
+                    "\t1. Check Personal Info\n\t2. View Accounts\n\t3. Approve/Deny open applications for accounts\n\t4. Move Money\n\t5. Cancel Accounts\n\t6. Exit\n");
+            menu = readMenutwo();
+            switch (menu) {
+                case 1:
+                    System.out.println("Check Personal Info of User");
+                    viewPersonal();
+                    break;
+                case 2:
+                    System.out.println("View User Accounts");
+                    employeeViewAccount();
+                    break;
+                case 3:
+                    System.out.println("Approve/Deny Accounts");
+                    employeeApproveDenyPerson(employee);
+                    break;
+                case 4:
+
+                    break;
+                case 5:
+                    adminApproveDenyPerson(employee);
+                    break;
+                case 6:
+                    System.out.println("Logging out and entering Main Menu");
+                    break;
+                default:
+                    System.out.println("Sorry for the inconvenience, System is down try running program");
+                    break;
+            }
+        }while (menu !=6);
     }
 
     public static void customerMainMenu(Person newPerson){
@@ -412,4 +460,108 @@ public class Main {
         acc.createAccount(newAccout);
         System.out.println("New Bank Account Created pending Approval");
     }
+
+    public static void adminApproveDenyPerson(Person employee){
+        Person viewCurrent = findPerson();
+        ArrayList<Account> a1, a2;
+        AccountDaoJtbc acc = new AccountDaoJtbc();
+        String username = viewCurrent.getUserName();
+        a1 = acc.getByUser1(username);
+        a2 = acc.getByUser2(username);
+        for (Account b : a1){
+            if(b.getStatus() == 1){
+                b.toString();
+            }
+        }
+        for (Account b : a2){
+            if(b.getStatus() == 1){
+                b.toString();
+            }
+        }
+        Account currentAccount;
+        String inputLine = "Please enter the Account Number you want to delete";
+        Scanner userInput = new Scanner(System.in);
+        ScanInput uPin = new ScanInput(userInput);
+        int output;
+        int check;
+        int temp = 1;
+        for(;;) {
+            output = uPin.scannerUserInputInt(inputLine, 3);
+            currentAccount = acc.getByID(output);
+            if(!currentAccount.getUser1().equals(null)){
+                inputLine = "Enter 1 for not Deleting or 0 for Deleting";
+                check = uPin.scannerUserInputInt(inputLine,4);
+                switch (check){
+                    case 0:
+                        System.out.println("Cancelled");
+                        //admin only
+                        acc.deleteAccount(currentAccount);
+                        temp = 0;
+                        break;
+                    case 1:
+                        System.out.println("Not Cancelled");
+                        temp =0;
+                        break;
+                    default:
+                        System.out.println("Error try again");
+                        break;
+                }
+                if(temp == 0 ) {
+                    break;
+                }
+            }else {
+                System.out.println("Try again Account does not match our Systems");
+            }
+        }
+    }
+    public static void adminMoveMoney(){
+        Person y = findPerson();
+        Account x = new Account();
+        AccountDaoJtbc acc = new AccountDaoJtbc();
+        String inputLine = "Please enter action you would like to complete:\nEnter 1, 2, 3, or 4\n\t1. Deposit\n\t2. Withdraw\n\t3. Transfer\n\t4. Exit\n";
+        Scanner userInput = new Scanner(System.in);
+        ScanInput uPin = new ScanInput(userInput);
+        int output;
+        int transfer;
+        int money;
+        for(;;) {
+            output = uPin.scannerUserInputInt(inputLine, 1);
+            if(output == 4){
+                break;
+            }
+            money = uPin.scannerUserInputInt("Enter Amount: ",3);
+            switch (output){
+                case 1:
+                    x.deposit(y,x,money);
+                    acc.updateAccount(x);
+                    break;
+                case 2:
+                    x.withdraw(y,x,money);
+                    acc.updateAccount(x);
+                    break;
+                case 3:
+                    Account transferAccount;
+                    for(;;) {
+                        transfer = uPin.scannerUserInputInt("Please enter Account number to Transfer to: ", 3);
+                        transferAccount = acc.getByID(transfer);
+                        //Check if the entered id is a valid one
+                        if(transferAccount == null) {
+                            System.out.println("Account not found");
+                            continue;
+                        }else if(x.getUser1().equals(y.getUserName()) || x.getUser2().equals(y.getUserName())){
+                            break;
+                        }
+                    }
+                    // get account
+                    x.transfer(y,x,transferAccount,money);
+                    acc.updateAccount(x);
+                    acc.updateAccount(transferAccount);
+                    break;
+                default:
+                    System.out.println("Error try again");
+                    break;
+            }
+        }
+    }
+
 }
