@@ -87,7 +87,7 @@ public class Main {
             newPerson = p.getByUsername(newPerson.getUserName());
             //check if customer is an active user
             if(password.equals(newPerson.getPassword())){
-                int check = newPerson.getPin();
+                int check = newPerson.getAccountType();
                 if (check == 1) {
                     customerMainMenu(newPerson);
                     break;
@@ -109,7 +109,8 @@ public class Main {
             employee = p.getByUsername(employee.getUserName());
             //check if customer is an active user
             if(password.equals(employee.getPassword())){
-                int check = employee.getPin();
+                int check = employee.getAccountType();
+                System.out.println(check);
                 if(check == 3){
                     adminMainMenu(employee);
                     //admin
@@ -452,7 +453,7 @@ public class Main {
                 temp = pre.getByUsername(nameFL);
                 secondPin = secondPerson.inputPin();
                 //check if the account exist
-                if(temp.getAccountType() == secondPin ){
+                if(temp.getPin() == secondPin ){
                     break;
                 }
                 else{

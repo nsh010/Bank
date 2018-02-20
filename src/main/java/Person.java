@@ -26,7 +26,7 @@ public class Person implements Serializable {
     }
 
 
-    public Person(String userName, String password, int pin, int accountType, String nameFL, String ssn, String dob, String address) {
+    public Person(String userName, String password, int accountType, int pin, String nameFL, String ssn, String dob, String address) {
         this.userName = userName;
         this.password = password;
         this.pin = pin;

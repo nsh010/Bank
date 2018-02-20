@@ -46,8 +46,8 @@ public class PersonDaoJtbc implements PersonDao {
 
             ps.setString(1, person.getUserName());
             ps.setString(2, person.getPassword());
-            ps.setInt(4, person.getPin());
             ps.setInt(3, person.getAccountType());
+            ps.setInt(4, person.getPin());
             ps.setString(5, person.getNameFL());
             ps.setString(6, person.getSsn());
             ps.setString(7, person.getDob());
@@ -66,7 +66,7 @@ public class PersonDaoJtbc implements PersonDao {
     @Override
     public void updatePerson(Person person){
         try(Connection conn = connectionUtil.getConnection()){
-            String query = "UPDATE persons SET userName = ?, password = ?, pin = ?, accountType = ?, nameFL = ?, ssn = ?, dob = ?, address = ?";
+            String query = "UPDATE persons SET userName = ?, password = ?, accountType = ?, pin = ?, nameFL = ?, ssn = ?, dob = ?, address = ?";
             PreparedStatement ps = conn.prepareStatement(query);
 
             ps.execute();
