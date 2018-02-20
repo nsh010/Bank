@@ -33,7 +33,7 @@ public class Main {
                     break;
                 case 3:
                     System.out.println("Let's create an account");
-                    newAccount();
+                    newAccountPerson();
                     break;
                 case 4:
                     System.out.println("Thank you for using Bank of Blockchain, Good Bye");
@@ -63,7 +63,7 @@ public class Main {
         return output;
     }
 
-    public static void newAccount(){
+    public static void newAccountPerson(){
         Person newPerson = new Person();
         PersonDaoJtbc p = new PersonDaoJtbc();
         newPerson.setUserName(newPerson.inputUserName());
@@ -205,7 +205,6 @@ public class Main {
         for (Account b : a1){
             if(b.getStatus() == 1){
                 System.out.println(b.toString());
-
             }
         }
         for (Account b : a2){
@@ -261,7 +260,7 @@ public class Main {
         String name  = employee.getUserName();
         do{
             System.out.println("Welcome Back " + name +
-                    "\nPlease indicate what you need by entering 1, 2, 3, or 4:\n" +
+                    "\nPlease indicate what you need by entering 1, 2, 3, 4, 5, or 6:\n" +
                     "\t1. Check Personal Info\n\t2. View Accounts\n\t3. Approve/Deny open applications for accounts\n\t4. Move Money\n\t5. Cancel Accounts\n\t6. Exit\n");
             menu = readMenutwo();
             switch (menu) {
