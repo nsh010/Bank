@@ -6,6 +6,8 @@ public interface AccountDao {
     ArrayList<Account> getByUser2(String user2);
     Account getByID(int accountidNum);
     void createAccount(Account account);
-    void updateAccount(Account account);
+    void updateBalance(Account account);
+    void updateAccountType(Account account);
+    void updateStatus(Account account);
     void deleteAccount(Account account);
 }

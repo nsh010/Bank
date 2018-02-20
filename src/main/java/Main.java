@@ -87,8 +87,11 @@ public class Main {
             newPerson = p.getByUsername(newPerson.getUserName());
             //check if customer is an active user
             if(password.equals(newPerson.getPassword())){
-                customerMainMenu(newPerson);
-                break;
+                int check = newPerson.getPin();
+                if (check == 1) {
+                    customerMainMenu(newPerson);
+                    break;
+                }
             }
             else {
                 System.out.println("Try again, account is not in the system or information entered incorrectly");
@@ -106,7 +109,7 @@ public class Main {
             employee = p.getByUsername(employee.getUserName());
             //check if customer is an active user
             if(password.equals(employee.getPassword())){
-                int check = employee.getAccountType();
+                int check = employee.getPin();
                 if(check == 3){
                     adminMainMenu(employee);
                     //admin
@@ -201,12 +204,13 @@ public class Main {
         a2 = acc.getByUser2(username);
         for (Account b : a1){
             if(b.getStatus() == 1){
-                b.toString();
+                System.out.println(b.toString());
+
             }
         }
         for (Account b : a2){
             if(b.getStatus() == 1){
-                b.toString();
+                System.out.println(b.toString());
             }
         }
         Account currentAccount;
@@ -235,6 +239,7 @@ public class Main {
                         if(currentAccount.getStatus() != 0){
                             currentAccount.switchStatus(employee);
                         }
+
                         temp =0;
                         break;
                     default:
@@ -389,11 +394,11 @@ public class Main {
             switch (output){
                 case 1:
                     x.deposit(y,x,money);
-                    acc.updateAccount(x);
+                    acc.updateBalance(x);
                     break;
                 case 2:
                     x.withdraw(y,x,money);
-                    acc.updateAccount(x);
+                    acc.updateBalance(x);
                     break;
                 case 3:
                     Account transferAccount;
@@ -410,8 +415,8 @@ public class Main {
                     }
                     // get account
                     x.transfer(y,x,transferAccount,money);
-                    acc.updateAccount(x);
-                    acc.updateAccount(transferAccount);
+                    acc.updateBalance(x);
+                    acc.updateBalance(transferAccount);
                     break;
                 default:
                     System.out.println("Error try again");
@@ -447,7 +452,7 @@ public class Main {
                 temp = pre.getByUsername(nameFL);
                 secondPin = secondPerson.inputPin();
                 //check if the account exist
-                if(temp.getPin() == secondPin ){
+                if(temp.getAccountType() == secondPin ){
                     break;
                 }
                 else{
@@ -534,11 +539,11 @@ public class Main {
             switch (output){
                 case 1:
                     x.deposit(y,x,money);
-                    acc.updateAccount(x);
+                    acc.updateBalance(x);
                     break;
                 case 2:
                     x.withdraw(y,x,money);
-                    acc.updateAccount(x);
+                    acc.updateBalance(x);
                     break;
                 case 3:
                     Account transferAccount;
@@ -555,8 +560,8 @@ public class Main {
                     }
                     // get account
                     x.transfer(y,x,transferAccount,money);
-                    acc.updateAccount(x);
-                    acc.updateAccount(transferAccount);
+                    acc.updateBalance(x);
+                    acc.updateBalance(transferAccount);
                     break;
                 default:
                     System.out.println("Error try again");

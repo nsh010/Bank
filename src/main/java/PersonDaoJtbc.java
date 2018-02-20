@@ -22,7 +22,7 @@ public class PersonDaoJtbc implements PersonDao {
 
                 userName = results.getString("userName");
                 String password = results.getString("password");
-                int accountType = results.getInt("accountType");
+                int accountType = results.getInt("accounttype");
                 int pin = results.getInt("pin");
                 String nameFL = results.getString("nameFL");
                 String ssn = results.getString("ssn");

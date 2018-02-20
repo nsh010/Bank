@@ -42,6 +42,7 @@ public class AccountDaoJtbc implements AccountDao {
             ps.setString(1,user2);
 
             ResultSet results = ps.executeQuery();
+            ResultSet results = ps.executeQuery();
             ArrayList<Account> accounts = new ArrayList<>();
             while (results.next()){
                 user2 = results.getString("user2");
@@ -110,12 +111,40 @@ public class AccountDaoJtbc implements AccountDao {
     }
 
     @Override
-    public void updateAccount(Account account) {
+    public void updateBalance(Account account) {
         try(Connection conn = connectionUtil.getConnection()){
             String query = "UPDATE accounts SET balance = ? WHERE accountidNum = ?";
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setInt(1, account.getBalance());
             ps.setInt(2,account.getAccountidNum());
+
+            ps.execute();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateAccountType(Account account){
+        try(Connection conn = connectionUtil.getConnection()){
+            String query = "UPDATE accounts SET accounttype = ? WHERE accountidNum = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, account.getAccountType());
+            ps.setInt(2, account.getAccountidNum());
+
+            ps.execute();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateStatus(Account account){
+        try(Connection conn = connectionUtil.getConnection()){
+            String query = "UPDATE accounts SET status = ? WHERE accountidNum = ?";
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, account.getStatus());
+            ps.setInt(2, account.getAccountidNum());
 
             ps.execute();
         } catch (SQLException e){

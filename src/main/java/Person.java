@@ -8,7 +8,7 @@ public class Person implements Serializable {
     private String userName;
     private String password;
     private int pin;
-    private int accountType; // pending = 0, active = 1, employee = 2, admin = 3
+    private int accountType; // pending =0, active = 1, employee = 2, admin = 3
     private String nameFL;
     private String ssn;
     private String dob;
