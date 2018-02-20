@@ -30,7 +30,7 @@ public class PersonDaoJtbc implements PersonDao {
                 String address = results.getString("address");
                 return new Person(userName, password, accountType, pin, nameFL, ssn, dob, address);
             } else {
-                return null;
+                return new Person(null, null, 0, 0, null, null, null, null);
             }
         } catch (SQLException e) {
             e.printStackTrace();
