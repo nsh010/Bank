@@ -42,7 +42,6 @@ public class AccountDaoJtbc implements AccountDao {
             ps.setString(1,user2);
 
             ResultSet results = ps.executeQuery();
-            ResultSet results = ps.executeQuery();
             ArrayList<Account> accounts = new ArrayList<>();
             while (results.next()){
                 user2 = results.getString("user2");

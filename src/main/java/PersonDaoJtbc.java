@@ -46,8 +46,8 @@ public class PersonDaoJtbc implements PersonDao {
 
             ps.setString(1, person.getUserName());
             ps.setString(2, person.getPassword());
-            ps.setInt(3, person.getPin());
-            ps.setInt(4, person.getAccountType());
+            ps.setInt(4, person.getPin());
+            ps.setInt(3, person.getAccountType());
             ps.setString(5, person.getNameFL());
             ps.setString(6, person.getSsn());
             ps.setString(7, person.getDob());
