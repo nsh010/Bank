@@ -82,6 +82,7 @@ public class Person implements Serializable {
     }
 
     public void setSsn(String ssn) {
+        ssn = createSHA(ssn, "sat");
         this.ssn = ssn;
     }
 
@@ -186,7 +187,7 @@ public class Person implements Serializable {
             md.update(salt.getBytes(StandardCharsets.UTF_8));
             byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();
-            for(int i=0; i< bytes.length; i++){
+            for(int i=0; i< 10; i++){
                 sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
             password = sb.toString();

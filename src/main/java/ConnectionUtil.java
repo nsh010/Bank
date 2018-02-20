@@ -19,7 +19,7 @@ public class ConnectionUtil {
     public Connection getConnection() {
         try {
             Properties prop = new Properties();
-            prop.load(new FileReader("C:\\Users\\Navroop Hundal\\Documents\\Bank\\src\\main\\java\\database (1).properties"));
+            prop.load(new FileReader("/Users/Harrison/Documents/GitHub/Bank/src/main/java/database (1).properties"));
             return DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
         } catch(SQLException e) {
             e.printStackTrace();

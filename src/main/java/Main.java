@@ -71,7 +71,7 @@ public class Main {
         newPerson.setSsn(newPerson.inputSSN());
         newPerson.setDob(newPerson.inputDOB());//Send it to the pending account table
         newPerson.setAddress(newPerson.inputAddress());
-        p.createPerson(newPerson);System.out.println("Pending Company Approval, takes 24 hours, please login in tomorrow, Thank you for your time\nReturning to Main Menu");
+        p.createPerson(newPerson);System.out.println("Login Account Created\nReturning to Main Menu");
         //System.out.println(newPerson.toString());
     }
 
@@ -346,30 +346,32 @@ public class Main {
         ScanInput uPin = new ScanInput(userInput);
         int tigger =1;
         int output;
-        for(;;){
-            output = uPin.scannerUserInputInt(inputLine,3);
-            // create for loop of accounts to make sure that match
-            for (Account b : a1){
-                if(b.getAccountidNum() == output){
-                    currentAccount = b;
-                    tigger = 0;
+        if(!a1.isEmpty() || !a2.isEmpty()) {
+            for (; ; ) {
+                output = uPin.scannerUserInputInt(inputLine, 3);
+                // create for loop of accounts to make sure that match
+                for (Account b : a1) {
+                    if (b.getAccountidNum() == output) {
+                        currentAccount = b;
+                        tigger = 0;
+                        break;
+                    }
+                }
+                for (Account b : a2) {
+                    if (b.getAccountidNum() == output) {
+                        currentAccount = b;
+                        tigger = 0;
+                        break;
+                    }
+                }
+                if (tigger == 0) {
                     break;
                 }
+                System.out.println("Input doesn't match your Account Number Try Again");
             }
-            for (Account b : a2){
-                if(b.getAccountidNum() == output){
-                    currentAccount = b;
-                    tigger = 0;
-                    break;
-                }
-            }
-            if(tigger == 0){
-                break;
-            }
-            System.out.println("Input doesn't match your Account Number Try Again");
+            moveMoney(x, currentAccount);
         }
-        moveMoney(x,currentAccount);
-
+        else System.out.println("You don't have an account please create one");
         // get complete account information
     }
 
@@ -474,12 +476,12 @@ public class Main {
         a1 = acc.getByUser1(username);
         a2 = acc.getByUser2(username);
         for (Account b : a1){
-            if(b.getStatus() == 1){
+            if(b.getStatus() == 0){
                 System.out.println(b.toString());
             }
         }
         for (Account b : a2){
-            if(b.getStatus() == 1){
+            if(b.getStatus() == 0){
                 System.out.println(b.toString());
             }
         }
