@@ -142,8 +142,6 @@ public class Account {
     public String toString() {
         return "accountidNum = " + accountidNum +
                 "\nbalance = " + balance +
-                "\naccountType = " + accountType +
-                "\nstatus = " + status +
                 "\nUser1 = " + User1 +
                 "\nUser2 = " + User2 + "\n";
     }

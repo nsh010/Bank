@@ -53,6 +53,11 @@ public class ScanInput {
                 else return false;
             case 3:
                 return true;
+            case 4:
+                if(input == 0 || input == 1){
+                    return true;
+                }
+                else return false;
             default:
                 return false;
         }

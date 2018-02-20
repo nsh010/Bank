@@ -118,11 +118,126 @@ public class Main {
     }
 
     public static void employeeMainMenu(Person employee){
-
+        int menu;
+        String name  = employee.getUserName();
+        do{
+            System.out.println("Welcome Back " + name +
+                    "\nPlease indicate what you need by entering 1, 2, 3, or 4:\n" +
+                    "\t1. Check Personal Info\n\t2. View Accounts\n\t3. Approve/Deny open applications for accounts\n\t4. Exit\n");
+            menu = readMenu();
+            switch (menu) {
+                case 1:
+                    System.out.println("Check Personal Info of User");
+                    viewPersonal();
+                    break;
+                case 2:
+                    System.out.println("View User Accounts");
+                    employeeViewAccount();
+                    break;
+                case 3:
+                    System.out.println("Approve/Deny Accounts");
+                    employeeApproveDenyPerson(employee);
+                    break;
+                case 4:
+                    System.out.println("Logging out and entering Main Menu");
+                    break;
+                default:
+                    System.out.println("Sorry for the inconvenience, System is down try running program");
+                    break;
+            }
+        }while (menu !=4);
     }
 
-    public static void adminMainMenu(Person employee){
+    public static void viewPersonal(){
+        Person viewCurrent = findPerson();
+        viewCurrent.toString();
+    }
 
+    public static Person findPerson(){
+        Person x = new Person();
+        PersonDaoJtbc check = new PersonDaoJtbc();
+        for(;;) {
+            x = check.getByUsername(x.inputUserName());
+            if(!x.getUserName().equals(null)){
+                break;
+            }
+            else {
+                System.out.println("User Not Found Try again.");
+            }
+        }
+        return x;
+    }
+
+    public static void employeeViewAccount(){
+        Person viewCurrent = findPerson();
+        ArrayList<Account> a1, a2;
+        AccountDaoJtbc acc = new AccountDaoJtbc();
+        String username = viewCurrent.getUserName();
+        a1 = acc.getByUser1(username);
+        a2 = acc.getByUser2(username);
+        for (Account b : a1){
+            System.out.println(b.toString());
+        }
+        for (Account b : a2){
+            System.out.println(b.toString());
+        }
+    }
+
+    public static void employeeApproveDenyPerson(Person employee){
+        Person viewCurrent = findPerson();
+        ArrayList<Account> a1, a2;
+        AccountDaoJtbc acc = new AccountDaoJtbc();
+        String username = viewCurrent.getUserName();
+        a1 = acc.getByUser1(username);
+        a2 = acc.getByUser2(username);
+        for (Account b : a1){
+            if(b.getStatus() == 1){
+                b.toString();
+            }
+        }
+        for (Account b : a2){
+            if(b.getStatus() == 1){
+                b.toString();
+            }
+        }
+        Account currentAccount;
+        String inputLine = "Please enter the Account Number you want to Approve or Deny";
+        Scanner userInput = new Scanner(System.in);
+        ScanInput uPin = new ScanInput(userInput);
+        int output;
+        int check;
+        for(;;) {
+            output = uPin.scannerUserInputInt(inputLine, 3);
+            currentAccount = acc.getByID(output);
+            if(!currentAccount.getUser1().equals(null)){
+                inputLine = "Enter 1 for Approve or 0 for Deny"
+                check = uPin.scannerUserInputInt(inputLine,4);
+                switch (check){
+                    case 0:
+                        System.out.println("Account Denied, Account Deleted from system");
+                        acc.deleteAccount(currentAccount);
+                        break;
+                    case 1:
+                        System.out.println("Approve, Entered into System");
+                        currentAccount.switchStatus(employee);
+                        if(currentAccount.getStatus() != 0){
+                            currentAccount.switchStatus(employee);
+                        }
+                        break;
+                    default:
+                        System.out.println("Error try again");
+                        break;
+                }
+                break;
+            }else {
+                System.out.println("Try again Account does not match our Systems");
+            }
+        }
+    }
+
+
+    public static void adminMainMenu(Person employee){
+        
     }
 
     public static void customerMainMenu(Person newPerson){
@@ -167,10 +282,14 @@ public class Main {
         a1 = acc.getByUser1(username);
         a2 = acc.getByUser2(username);
         for (Account b : a1){
-            System.out.println(b.toString());
+            if(b.getStatus() == 0){
+                b.toString();
+            }
         }
         for (Account b : a2){
-            System.out.println(b.toString());
+            if(b.getStatus() == 0){
+                b.toString();
+            }
         }
 
         String inputLine = "Please enter the Account Number you want to enter into";
@@ -255,6 +374,9 @@ public class Main {
 
 
     public static void newAccount(Person x){
+        AccountDaoJtbc acc = new AccountDaoJtbc();
+        PersonDaoJtbc pre = new PersonDaoJtbc();
+        Person temp;
         String inputLine = "Please enter Account Type:\nEnter 1, 2, or 3\n\t1.Checking\n\t2.Savings\n\t3.Joint\n";
         Scanner userInput = new Scanner(System.in);
         ScanInput uPin = new ScanInput(userInput);
@@ -271,19 +393,23 @@ public class Main {
             String nameFL;
             int secondPin;
             Person secondPerson = new Person();
-            inputLine = "In order to complete the creation of the Joint account please enter the other User's username and pin";
+            System.out.println("In order to complete the creation of the Joint account please enter the other User's username and pin");
             for(;;) {
                 nameFL = secondPerson.inputUserName();
+                temp = pre.getByUsername(nameFL);
                 secondPin = secondPerson.inputPin();
                 //check if the account exist
-                if(true){
+                if(temp.getPin() == secondPin ){
                     break;
                 }
-                else continue;
+                else{
+                    System.out.println("Joint account not created please try again");
+                }
             }
             //Add to account
             newAccout.setUser2(nameFL);
         }
+        acc.createAccount(newAccout);
         System.out.println("New Bank Account Created pending Approval");
     }
 }

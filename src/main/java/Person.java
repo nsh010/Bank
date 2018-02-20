@@ -103,15 +103,11 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        String temp = "userName = '" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", pin=" + pin +
-                ", accountType=" + accountType +
-                ", nameFL='" + nameFL + '\'' +
-                ", ssn='" + ssn + '\'' +
-                ", dob='" + dob + '\'' +
-                ", address='" + address.toString() + '\'' +
-                '}';
+        String temp = "userName = " + userName +
+                "\nnameFL = " + nameFL +
+                "\nssn = " + ssn +
+                "\ndob = " + dob +
+                "\naddress = " + address;
         return temp;
     }
 
