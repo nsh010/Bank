@@ -517,6 +517,7 @@ public class Main {
     public static void adminMoveMoney(){
         Person y = findPerson();
         Account x = new Account();
+
         AccountDaoJtbc acc = new AccountDaoJtbc();
         String inputLine = "Please enter action you would like to complete:\nEnter 1, 2, 3, or 4\n\t1. Deposit\n\t2. Withdraw\n\t3. Transfer\n\t4. Exit\n";
         Scanner userInput = new Scanner(System.in);
