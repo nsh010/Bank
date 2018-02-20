@@ -83,7 +83,7 @@ public class AccountDaoJtbc implements AccountDao {
         } catch(SQLException e){
             e.printStackTrace();
         }
-        return null;
+        return new Account(0, 0, 0, 1, null, null);
     }
 
     @Override
