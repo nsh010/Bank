@@ -337,12 +337,12 @@ public class Main {
         a2 = acc.getByUser2(username);
         for (Account b : a1){
             if(b.getStatus() == 0){
-                b.toString();
+                System.out.println(b.toString());
             }
         }
         for (Account b : a2){
             if(b.getStatus() == 0){
-                b.toString();
+                System.out.println(b.toString());
             }
         }
 
