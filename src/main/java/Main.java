@@ -240,7 +240,7 @@ public class Main {
                         if(currentAccount.getStatus() != 0){
                             currentAccount.switchStatus(employee);
                         }
-
+                        acc.updateStatus(currentAccount);
                         temp =0;
                         break;
                     default:
